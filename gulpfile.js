@@ -39,7 +39,7 @@ gulp.task('css', function(){
 
 gulp.task('scripts', function() {
   gulp.src(paths.src.js)
-      .pipe($.uglify())
+      // .pipe($.uglify())
       .pipe(gulp.dest(paths.dest.js))
 });
 

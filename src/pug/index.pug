@@ -1,7 +1,83 @@
 extends layout
 block style
+  link(rel='stylesheet', href='./styles/sidebar.css')
+  link(rel='stylesheet', href='./styles/bootstrap-switch.min.css')
   link(rel='stylesheet', href='./styles/main.css')
 block content
-
+  #app(v-cloak)
+    #sidebar.sidebar.collapsed
+      //- Nav tabs
+      .sidebar-tabs
+        ul(role='tablist')
+          li
+            a(href='#filter', role='tab')
+              i.fa.fa-filter
+      //- Tab panes
+      .sidebar-content
+        #filter.sidebar-pane
+          h1.sidebar-header
+            | 篩選條件
+            span.sidebar-close
+              i.fa.fa-caret-left
+          .sidebar-body
+            #filterType
+              h2 測量類別
+              .row
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: filterType==1}', v-on:click='filterType=1') PM2.5
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: filterType==2}', v-on:click='filterType=2') PM2.5_NASA
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: filterType==3}', v-on:click='filterType=3') AQI
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: filterType==4}', v-on:click='filterType=4') 溫度
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: filterType==5}', v-on:click='filterType=5') 濕度
+            #filterGroup
+              h2 群組
+              .row
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: groupView["lass"]}', v-on:click='groupView["lass"]=!(groupView["lass"])')
+                    .count {{ marker['lass'].length }}
+                    .name LASS
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: groupView["lass4u"]}', v-on:click='groupView["lass4u"]=!(groupView["lass4u"])')
+                    .count {{ marker['lass4u'].length }}
+                    .name LASS-4U
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: groupView["maps"]}', v-on:click='groupView["maps"]=!(groupView["maps"])')
+                    .count {{ marker['maps'].length }}
+                    .name LASS-MAPS
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: groupView["probecube"]}', v-on:click='groupView["probecube"]=!(groupView["probecube"])')
+                    .count {{ marker['probecube'].length }}
+                    .name Probecube
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: groupView["indie"]}', v-on:click='groupView["indie"]=!(groupView["indie"])')
+                    .count {{ marker['indie'].length }}
+                    .name Indie
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: groupView["airbox"]}', v-on:click='groupView["airbox"]=!(groupView["airbox"])')
+                    .count {{ marker['airbox'].length }}
+                    .name Airbox
+                .col-xs-6
+                  button.btn(v-bind:class='{ selected: groupView["epa"]}', v-on:click='groupView["epa"]=!(groupView["epa"])')
+                    .count {{ marker['epa'].length }}
+                    .name EPA
+            #resourceLayer
+              h2 資源圖層
+              .row
+                .col-xs-8
+                  h3 風力線
+                .col-xs-4
+                  input#windLayerSw(type='checkbox', checked)
+              .row
+                .col-xs-8
+                  h3 固定汙染源
+                .col-xs-4
+                  input#pollutionSiteSw(type='checkbox', checked)
+    #map
 block append js
+  script(src='./js/libs/sidebar.js')
+  script(src='./js/libs/bootstrap-switch.min.js')
   script(src='./js/main.js')
