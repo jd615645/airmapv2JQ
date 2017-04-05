@@ -24,44 +24,44 @@ block content
               h2 測量類別
               .row
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: filterType==1}', v-on:click='filterType=1') PM2.5
+                  button.btn(v-bind:class='{ selected: filterType=="pm25"}', v-on:click='toggleFilter("pm25")') PM2.5
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: filterType==2}', v-on:click='filterType=2') PM2.5_NASA
+                  button.btn(v-bind:class='{ selected: filterType=="pm25NASA"}', v-on:click='toggleFilter("pm25NASA")') PM2.5_NASA
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: filterType==3}', v-on:click='filterType=3') AQI
+                  button.btn(v-bind:class='{ selected: filterType=="aqi"}', v-on:click='toggleFilter("aqi")') AQI
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: filterType==4}', v-on:click='filterType=4') 溫度
+                  button.btn(v-bind:class='{ selected: filterType=="temp"}', v-on:click='toggleFilter("temp")') 溫度
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: filterType==5}', v-on:click='filterType=5') 濕度
+                  button.btn(v-bind:class='{ selected: filterType=="humi"}', v-on:click='toggleFilter("humi")') 濕度
             #filterGroup
               h2 群組
               .row
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["lass"]}', v-on:click='groupView["lass"]=!(groupView["lass"])')
+                  button.btn(v-bind:class='{ selected: groupView["lass"]}', v-on:click='toggleGroup("lass")')
                     .count {{ marker['lass'].length }}
                     .name LASS
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["lass4u"]}', v-on:click='groupView["lass4u"]=!(groupView["lass4u"])')
+                  button.btn(v-bind:class='{ selected: groupView["lass4u"]}', v-on:click='toggleGroup("lass4u")')
                     .count {{ marker['lass4u'].length }}
                     .name LASS-4U
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["maps"]}', v-on:click='groupView["maps"]=!(groupView["maps"])')
+                  button.btn(v-bind:class='{ selected: groupView["maps"]}', v-on:click='toggleGroup("maps")')
                     .count {{ marker['maps'].length }}
                     .name LASS-MAPS
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["probecube"]}', v-on:click='groupView["probecube"]=!(groupView["probecube"])')
+                  button.btn(v-bind:class='{ selected: groupView["probecube"]}', v-on:click='toggleGroup("probecube")')
                     .count {{ marker['probecube'].length }}
                     .name Probecube
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["indie"]}', v-on:click='groupView["indie"]=!(groupView["indie"])')
+                  button.btn(v-bind:class='{ selected: groupView["indie"]}', v-on:click='toggleGroup("indie")')
                     .count {{ marker['indie'].length }}
                     .name Indie
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["airbox"]}', v-on:click='groupView["airbox"]=!(groupView["airbox"])')
+                  button.btn(v-bind:class='{ selected: groupView["airbox"]}', v-on:click='toggleGroup("airbox")')
                     .count {{ marker['airbox'].length }}
                     .name Airbox
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["epa"]}', v-on:click='groupView["epa"]=!(groupView["epa"])')
+                  button.btn(v-bind:class='{ selected: groupView["epa"]}', v-on:click='toggleGroup("epa")')
                     .count {{ marker['epa'].length }}
                     .name EPA
             #resourceLayer
@@ -77,6 +77,8 @@ block content
                 .col-xs-4
                   input#pollutionSiteSw(type='checkbox', checked)
     #map
+    include ./indicatorLevel.pug
+
 block append js
   script(src='./js/libs/sidebar.js')
   script(src='./js/libs/bootstrap-switch.min.js')
