@@ -7,6 +7,9 @@ var vm = new Vue({
       airData: {'lass': [], 'lass4u': [], 'maps': [], 'probecube': [], 'indie': [], 'airbox': [], 'epa': []},
       filterType: 'pm25',
       groupView: {'lass': true, 'lass4u': true, 'maps': true, 'probecube': true, 'indie': true, 'airbox': true, 'epa': true},
+      windLayer: false,
+      emissionSite: false,
+      dateProgress: 0,
       // filter color
       pm25Gap: [0, 11, 23, 35, 41, 47, 53, 58, 64, 70],
       pm25GapColor: ['#c9e7a7', '#00ff00', '#0c0', '#ff0', '#f3c647', '#e46c0a', '#d99694', '#ff0000', '#800000', '#7030a0'],
@@ -21,12 +24,22 @@ var vm = new Vue({
     }
   },
   mounted(){
-    $('#resourceLayer input').bootstrapSwitch({
-      state: false
-    })
+    $('#resourceLayer input').bootstrapSwitch()
     this.getData()
   },
   computed: {
+    timeCalc() {
+      let hour = this.dateProgress
+      if (hour < 0) {
+        return abs(hour)+'小時前'
+      }
+      else if (hour === 0) {
+        return '現在'
+      }
+      else if (hour > 0) {
+        return hour+'小時後'
+      }
+    },
   },
   methods: {
     getData() {
@@ -65,8 +78,22 @@ var vm = new Vue({
       $.each(this.groupType, (ik, group) => {
         // console.log(this.airData[group])
         $.each(this.marker[group], (jk, jv) => {
-          let pm25 = this.airData[group][jk]['s_d0']
-          jv.setStyle({color: this.markerColor(pm25)})
+          let pm25 = this.airData[group][jk]['s_d0'],
+              temp = this.airData[group][jk]['s_t0'],
+              humi = this.airData[group][jk]['s_h0']
+          switch(type) {
+            case 'pm25':
+            case 'pm25NASA':
+            case 'aqi':
+              jv.setStyle({color: this.markerColor(pm25)})
+              break
+            case 'temp':
+              jv.setStyle({color: this.markerColor(temp)})
+              break
+            case 'humi':
+              jv.setStyle({color: this.markerColor(humi)})
+              break
+          }
         })
       })
     },
@@ -84,40 +111,40 @@ var vm = new Vue({
         }
       })
     },
-    markerColor(pm25) {
-      let color = ''
+    markerColor(num) {
+      let color = '#eee'
       switch(this.filterType) {
         case 'pm25':
           $.each(this.pm25Gap, (key, val) => {
-            if(pm25 >= val) {
+            if(num >= val) {
               color = this.pm25GapColor[key]
             }
           })
           break
         case 'pm25NASA':
-          $.each(this.pm25_NASAGap, (key, val) => {
-            if(pm25 >= val) {
+          $.each(this.pm25NASAGap, (key, val) => {
+            if(num >= val) {
               color = this.pm25NASAGapColor[key]
             }
           })
           break
         case 'aqi':
           $.each(this.aqiGap, (key, val) => {
-            if(pm25 >= val) {
+            if(num >= val) {
               color = this.aqiGapColor[key]
             }
           })
           break
         case 'temp':
           $.each(this.tempGap, (key, val) => {
-            if(pm25 >= val) {
+            if(num >= val) {
               color = this.tempGapColor[key]
             }
           })
           break
         case 'humi':
           $.each(this.humiGap, (key, val) => {
-            if(pm25 >= val)
+            if(num >= val)
               color = this.humiGapColor[key]
           })
           break

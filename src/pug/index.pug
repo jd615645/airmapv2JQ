@@ -70,14 +70,17 @@ block content
                 .col-xs-8
                   h3 風力線
                 .col-xs-4
-                  input#windLayerSw(type='checkbox', checked)
+                  input#windLayerSw(type='checkbox')
               .row
                 .col-xs-8
                   h3 固定汙染源
                 .col-xs-4
-                  input#pollutionSiteSw(type='checkbox', checked)
+                  input#pollutionSiteSw(type='checkbox')
     #map
     include ./indicatorLevel.pug
+    #timeProgress
+      input(type='range', min='-3', max='3', v-model.number='dateProgress')
+      p#time {{ timeCalc }}
 
 block append js
   script(src='./js/libs/sidebar.js')
