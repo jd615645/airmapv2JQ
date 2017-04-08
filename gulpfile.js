@@ -7,7 +7,7 @@ var paths = {
     css   : './src/styles/css/*.css',
     js    : './src/js/*.js',
     libs  : './src/js/libs/*.js',
-    data  : './src/data/*',
+    data  : './src/data/**',
     pug   : './src/pug/*.pug',
     images: './src/img/*'
   },

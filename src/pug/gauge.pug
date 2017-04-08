@@ -1,0 +1,11 @@
+extends layout
+block style
+  link(rel='stylesheet', href='./styles/gauge.css')
+block content
+  button Hi
+  #gauge
+
+block append js
+  script(src='./js/libs/raphael-2.1.4.min.js')
+  script(src='./js/libs/justgage.js')
+  script(src='./js/gauge.js')

@@ -45,8 +45,8 @@ block content
                     .count {{ marker['lass4u'].length }}
                     .name LASS-4U
                 .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["maps"]}', v-on:click='toggleGroup("maps")')
-                    .count {{ marker['maps'].length }}
+                  button.btn(v-bind:class='{ selected: groupView["lassmaps"]}', v-on:click='toggleGroup("lassmaps")')
+                    .count {{ marker['lassmaps'].length }}
                     .name LASS-MAPS
                 .col-xs-6
                   button.btn(v-bind:class='{ selected: groupView["probecube"]}', v-on:click='toggleGroup("probecube")')
@@ -75,7 +75,7 @@ block content
                 .col-xs-8
                   h3 固定汙染源
                 .col-xs-4
-                  input#pollutionSiteSw(type='checkbox')
+                  input#emissionSiteSw(type='checkbox')
     #map
     include ./indicatorLevel.pug
     #timeProgress
@@ -83,6 +83,9 @@ block content
       p#time {{ timeCalc }}
 
 block append js
+  script(src='./js/libs/L.CanvasLayer.js')
+  script(src='./js/libs/windy.js')
+  script(src='https://d3js.org/d3.v3.min.js')
   script(src='./js/libs/sidebar.js')
   script(src='./js/libs/bootstrap-switch.min.js')
   script(src='./js/main.js')

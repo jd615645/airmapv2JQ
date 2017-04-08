@@ -2,11 +2,12 @@ var vm = new Vue({
   el: '#app',
   data() {
     return{
-      groupType: ['lass', 'lass4u', 'maps', 'probecube', 'indie', 'airbox', 'epa'],
-      marker: {'lass': [], 'lass4u': [], 'maps': [], 'probecube': [], 'indie': [], 'airbox': [], 'epa': []},
-      airData: {'lass': [], 'lass4u': [], 'maps': [], 'probecube': [], 'indie': [], 'airbox': [], 'epa': []},
+      marker: {'lass': [], 'lass4u': [], 'lassmaps': [], 'probecube': [], 'indie': [], 'airbox': [], 'epa': []},
+      airData: {'lass': [], 'lass4u': [], 'lassmaps': [], 'probecube': [], 'indie': [], 'airbox': [], 'epa': []},
+      emissionData: [],
+      emissionMarker: [],
       filterType: 'pm25',
-      groupView: {'lass': true, 'lass4u': true, 'maps': true, 'probecube': true, 'indie': true, 'airbox': true, 'epa': true},
+      groupView: {'lass': true, 'lass4u': true, 'lassmaps': true, 'probecube': true, 'indie': true, 'airbox': true, 'epa': true},
       windLayer: false,
       emissionSite: false,
       dateProgress: 0,
@@ -26,6 +27,28 @@ var vm = new Vue({
   mounted(){
     $('#resourceLayer input').bootstrapSwitch()
     this.getData()
+    let emissionsIcon = L.icon({
+      iconUrl: './img/emissions.png',
+
+      iconSize: [20, 20]
+    });
+    $.getJSON('../data/emission.json', (data) => {
+      $.each(data, (key, val) => {
+        let lat = val['latitude'],
+            lon = val['longitude'],
+            name = val['name']
+
+        let data  = L.marker(new L.LatLng(lat, lon), {
+          icon: emissionsIcon,
+          opacity: 0,
+        }).bindPopup('<p>' + name + '</p>')
+        this.emissionMarker.push(data)
+        this.emissionData.push(val)
+      })
+      $.each(this.emissionMarker, (key, val) => {
+        val.addTo(map)
+      })
+    })
   },
   computed: {
     timeCalc() {
@@ -44,30 +67,34 @@ var vm = new Vue({
   methods: {
     getData() {
       let dataSrc = []
+      let sites = ['epa', 'lass', 'lass4u', 'lassmaps', 'airbox', 'probecube', 'indie']
 
-      $.each(this.groupType, (key, val) => {
-        dataSrc.push($.getJSON('../data/last-all-' + val + '.json'))
+      $.each(sites, (key, val) => {
+        dataSrc.push($.getJSON('../data/now/' + val + '.json'))
       })
       $.when
         .apply($, dataSrc)
         .then((...inputData) => {
           $.each(inputData, (ik, iv) => {
-            $.each(iv[0]['feeds'], (jk, jv) => {
-              let lat = jv['gps_lat'],
-                  log = jv['gps_lon'],
-                  pm25 = jv['s_d0']
+            $.each(iv[0], (jk, jv) => {
+              let siteName = jv['SiteName']
+              let lat = jv['LatLng']['lat']
+              let lng = jv['LatLng']['lng']
+              let pm25 = jv['Data']['pm25']
+              let humi = jv['Data']['humi']
+              let temp = jv['Data']['temp']
 
               if (_.isNumber(pm25)) {
-                let circleMarker = L.circleMarker(new L.LatLng(lat, log), {
+                let circleMarker = L.circleMarker(new L.LatLng(lat, lng), {
                   color: this.markerColor(pm25),
                   opacity: 1,
                   fillOpacity: 0.5
-                })
-                this.marker[this.groupType[ik]].push(circleMarker)
-                this.airData[this.groupType[ik]].push(jv)
+                }).bindPopup(this.infoPopup(jv))
+                this.marker[sites[ik]].push(circleMarker)
+                this.airData[sites[ik]].push(jv)
               }
             })
-            $.each(this.marker[this.groupType[ik]], (jk, jv) => {
+            $.each(this.marker[sites[ik]], (jk, jv) => {
               jv.addTo(map)
             })
           })
@@ -103,11 +130,23 @@ var vm = new Vue({
       $.each(this.marker[site], (key, val) => {
         // show
         if (this.groupView[site]) {
-          val.setStyle({opacity: 1, fillOpacity: 0.5});
+          val.setStyle({ zIndexOffset: 4 })
         }
         // hide
         else {
-          val.setStyle({opacity: 0, fillOpacity: 0});
+          val.setStyle({ zIndexOffset: -1 })
+        }
+      })
+    },
+    emissionSiteToggle() {
+      $.each(this.emissionMarker, (key, val) => {
+        // show
+        if (this.emissionSite) {
+          val.setOpacity(1)
+        }
+        // hide
+        else {
+          val.setOpacity(0)
         }
       })
     },
@@ -144,14 +183,19 @@ var vm = new Vue({
           break
         case 'humi':
           $.each(this.humiGap, (key, val) => {
-            if(num >= val)
+            if(num >= val) {
               color = this.humiGapColor[key]
+            }
           })
           break
       }
       return color
-    }
-
+    },
+    infoPopup(data) {
+      return (
+        '<p>pm25: ' + data['Data']['pm25'] + '</p>'
+      )
+    },
   }
 })
 
@@ -166,3 +210,15 @@ L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
 
 let sidebar = L.control.sidebar('sidebar').addTo(map)
 sidebar.open('filter')
+
+$('#windLayerSw')
+  .bootstrapSwitch()
+  .on('switchChange.bootstrapSwitch', (event, state) => {
+    vm.windLayer = state
+  })
+$('#emissionSiteSw')
+  .bootstrapSwitch()
+  .on('switchChange.bootstrapSwitch', (event, state) => {
+    vm.emissionSite = state
+    vm.emissionSiteToggle()
+  })
