@@ -48,29 +48,29 @@ block content
                   button.btn(v-bind:class='{ selected: groupView["lassmaps"]}', v-on:click='toggleGroup("lassmaps")')
                     .count {{ marker['lassmaps'].length }}
                     .name LASS-MAPS
-                .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["probecube"]}', v-on:click='toggleGroup("probecube")')
-                    .count {{ marker['probecube'].length }}
-                    .name Probecube
-                .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["indie"]}', v-on:click='toggleGroup("indie")')
-                    .count {{ marker['indie'].length }}
-                    .name Indie
+                //- .col-xs-6
+                //-   button.btn(v-bind:class='{ selected: groupView["probecube"]}', v-on:click='toggleGroup("probecube")')
+                //-     .count {{ marker['probecube'].length }}
+                //-     .name Probecube
+                //- .col-xs-6
+                //-   button.btn(v-bind:class='{ selected: groupView["indie"]}', v-on:click='toggleGroup("indie")')
+                //-     .count {{ marker['indie'].length }}
+                //-     .name Indie
                 .col-xs-6
                   button.btn(v-bind:class='{ selected: groupView["airbox"]}', v-on:click='toggleGroup("airbox")')
                     .count {{ marker['airbox'].length }}
                     .name Airbox
-                .col-xs-6
-                  button.btn(v-bind:class='{ selected: groupView["epa"]}', v-on:click='toggleGroup("epa")')
-                    .count {{ marker['epa'].length }}
-                    .name EPA
+                //- .col-xs-6
+                //-   button.btn(v-bind:class='{ selected: groupView["epa"]}', v-on:click='toggleGroup("epa")')
+                //-     .count {{ marker['epa'].length }}
+                //-     .name EPA
             #resourceLayer
               h2 資源圖層
-              .row
-                .col-xs-8
-                  h3 風力線
-                .col-xs-4
-                  input#windLayerSw(type='checkbox')
+              //- .row
+              //-   .col-xs-8
+              //-     h3 風力線
+              //-   .col-xs-4
+              //-     input#windLayerSw(type='checkbox')
               .row
                 .col-xs-8
                   h3 固定汙染源
@@ -79,8 +79,13 @@ block content
     #map
     include ./indicatorLevel.pug
     #timeProgress
-      input(type='range', min='-3', max='3', v-model.number='dateProgress')
-      p#time {{ timeCalc }}
+      .row
+        .col-xs-6
+          button.btn(v-bind:class='{ selected: timeType=="now"}', v-on:click='toggleTime("now")') 現在
+        .col-xs-6
+          button.btn(v-bind:class='{ selected: timeType=="prediction"}', v-on:click='toggleTime("prediction")') 預測
+      //- input(type='range', min='-3', max='3', v-model.number='dateProgress')
+      //- p#time {{ timeCalc }}
 
 block append js
   script(src='./js/libs/L.CanvasLayer.js')

@@ -7,6 +7,7 @@ var vm = new Vue({
       emissionData: [],
       emissionMarker: [],
       filterType: 'pm25',
+      timeType: 'now',
       groupView: {'lass': true, 'lass4u': true, 'lassmaps': true, 'probecube': true, 'indie': true, 'airbox': true, 'epa': true},
       windLayer: false,
       emissionSite: false,
@@ -54,7 +55,7 @@ var vm = new Vue({
     timeCalc() {
       let hour = this.dateProgress
       if (hour < 0) {
-        return abs(hour)+'小時前'
+        return abs(parseInt(hour))+'小時前'
       }
       else if (hour === 0) {
         return '現在'
@@ -67,7 +68,8 @@ var vm = new Vue({
   methods: {
     getData() {
       let dataSrc = []
-      let sites = ['epa', 'lass', 'lass4u', 'lassmaps', 'airbox', 'probecube', 'indie']
+      // let sites = ['epa', 'lass', 'lass4u', 'lassmaps', 'airbox', 'probecube', 'indie']
+      let sites = ['lass', 'lass4u', 'lassmaps', 'airbox']
 
       $.each(sites, (key, val) => {
         dataSrc.push($.getJSON('../data/now/' + val + '.json'))
@@ -101,13 +103,21 @@ var vm = new Vue({
         })
     },
     toggleFilter(type) {
-      this.filterType=type
-      $.each(this.groupType, (ik, group) => {
-        // console.log(this.airData[group])
-        $.each(this.marker[group], (jk, jv) => {
-          let pm25 = this.airData[group][jk]['s_d0'],
-              temp = this.airData[group][jk]['s_t0'],
-              humi = this.airData[group][jk]['s_h0']
+      this.filterType = type
+
+      $.each(this.marker, (ik, iv) => {
+        $.each(this.marker[ik], (jk, jv) => {
+          let markerData = this.airData[ik][jk]['Data']
+          let pm25
+          if (this.timeType == 'now') {
+            pm25 = markerData['pm25']
+          }
+          else {
+            pm25 = this.airData[ik][jk]['prediction']
+          }
+
+          let temp = markerData['temp']
+          let humi = markerData['humi']
           switch(type) {
             case 'pm25':
             case 'pm25NASA':
@@ -123,6 +133,7 @@ var vm = new Vue({
           }
         })
       })
+
     },
     toggleGroup(site) {
       this.groupView[site] = !(this.groupView[site])
@@ -130,13 +141,26 @@ var vm = new Vue({
       $.each(this.marker[site], (key, val) => {
         // show
         if (this.groupView[site]) {
-          val.setStyle({ zIndexOffset: 4 })
+          // val.setStyle({ zIndexOffset: 4 })
+          val.setStyle({ opacity: 1, fillOpacity: 0.5 })
         }
         // hide
         else {
-          val.setStyle({ zIndexOffset: -1 })
+          // val.setStyle({ zIndexOffset: -1 })
+          val.setStyle({ opacity: 0, fillOpacity: 0 })
         }
       })
+    },
+    toggleTime(time) {
+      switch(time) {
+        case 'now':
+          this.timeType = 'now'
+          break
+        case 'prediction':
+          this.timeType = 'prediction'
+          break
+      }
+      $('#filterType > div > div:nth-child(1) > button').click()
     },
     emissionSiteToggle() {
       $.each(this.emissionMarker, (key, val) => {
