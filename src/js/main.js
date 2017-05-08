@@ -33,7 +33,7 @@ var vm = new Vue({
 
       iconSize: [20, 20]
     })
-    $.getJSON('../data/emission.json', (data) => {
+    $.getJSON('./data/emission.json', (data) => {
       $.each(data, (key, val) => {
         let lat = val['latitude'],
           lon = val['longitude'],
