@@ -1,7 +1,7 @@
 var vm = new Vue({
   el: '#app',
   data() {
-    return{
+    return {
       marker: {'lass': [], 'lass4u': [], 'lassmaps': [], 'probecube': [], 'indie': [], 'airbox': [], 'epa': []},
       airData: {'lass': [], 'lass4u': [], 'lassmaps': [], 'probecube': [], 'indie': [], 'airbox': [], 'epa': []},
       emissionData: [],
@@ -22,26 +22,26 @@ var vm = new Vue({
       tempGap: [0, 5, 10, 15, 20, 25, 30, 35, 40],
       tempGapColor: ['#215968', '#b7dee8', '#77933c', '#d7e4bd', '#fac090', '#e46c0a', '#ff0000', '#800000'],
       humiGap: [20, 40, 60, 80],
-      humiGapColor: ['#fac090', '#76b531', '#b7dee8', '#215968'],
+      humiGapColor: ['#fac090', '#76b531', '#b7dee8', '#215968']
     }
   },
-  mounted(){
+  mounted() {
     $('#resourceLayer input').bootstrapSwitch()
     this.getData()
     let emissionsIcon = L.icon({
       iconUrl: './img/emissions.png',
 
       iconSize: [20, 20]
-    });
+    })
     $.getJSON('../data/emission.json', (data) => {
       $.each(data, (key, val) => {
         let lat = val['latitude'],
-            lon = val['longitude'],
-            name = val['name']
+          lon = val['longitude'],
+          name = val['name']
 
-        let data  = L.marker(new L.LatLng(lat, lon), {
+        let data = L.marker(new L.LatLng(lat, lon), {
           icon: emissionsIcon,
-          opacity: 0,
+          opacity: 0
         }).bindPopup('<p>' + name + '</p>')
         this.emissionMarker.push(data)
         this.emissionData.push(val)
@@ -55,15 +55,15 @@ var vm = new Vue({
     timeCalc() {
       let hour = this.dateProgress
       if (hour < 0) {
-        return abs(parseInt(hour))+'小時前'
+        return abs(parseInt(hour)) + '小時前'
       }
       else if (hour === 0) {
         return '現在'
       }
       else if (hour > 0) {
-        return hour+'小時後'
+        return hour + '小時後'
       }
-    },
+    }
   },
   methods: {
     getData() {
@@ -111,14 +111,13 @@ var vm = new Vue({
           let pm25
           if (this.timeType == 'now') {
             pm25 = markerData['pm25']
-          }
-          else {
+          }else {
             pm25 = this.airData[ik][jk]['prediction']
           }
 
           let temp = markerData['temp']
           let humi = markerData['humi']
-          switch(type) {
+          switch (type) {
             case 'pm25':
             case 'pm25NASA':
             case 'aqi':
@@ -133,11 +132,10 @@ var vm = new Vue({
           }
         })
       })
-
     },
     toggleGroup(site) {
       this.groupView[site] = !(this.groupView[site])
-      
+
       $.each(this.marker[site], (key, val) => {
         // show
         if (this.groupView[site]) {
@@ -152,7 +150,7 @@ var vm = new Vue({
       })
     },
     toggleTime(time) {
-      switch(time) {
+      switch (time) {
         case 'now':
           this.timeType = 'now'
           break
@@ -176,38 +174,38 @@ var vm = new Vue({
     },
     markerColor(num) {
       let color = '#eee'
-      switch(this.filterType) {
+      switch (this.filterType) {
         case 'pm25':
           $.each(this.pm25Gap, (key, val) => {
-            if(num >= val) {
+            if (num >= val) {
               color = this.pm25GapColor[key]
             }
           })
           break
         case 'pm25NASA':
           $.each(this.pm25NASAGap, (key, val) => {
-            if(num >= val) {
+            if (num >= val) {
               color = this.pm25NASAGapColor[key]
             }
           })
           break
         case 'aqi':
           $.each(this.aqiGap, (key, val) => {
-            if(num >= val) {
+            if (num >= val) {
               color = this.aqiGapColor[key]
             }
           })
           break
         case 'temp':
           $.each(this.tempGap, (key, val) => {
-            if(num >= val) {
+            if (num >= val) {
               color = this.tempGapColor[key]
             }
           })
           break
         case 'humi':
           $.each(this.humiGap, (key, val) => {
-            if(num >= val) {
+            if (num >= val) {
               color = this.humiGapColor[key]
             }
           })
@@ -216,17 +214,24 @@ var vm = new Vue({
       return color
     },
     infoPopup(data) {
+      // console.log(data)
+      let pm25
+      if (this.timeType == 'now') {
+        pm25 = data['Data']['pm25']
+      } else {
+        pm25 = data['prediction']
+      }
       return (
-        '<p>pm25: ' + data['Data']['pm25'] + '</p>'
+        '<p>' + data['uniqueKey'] + '</p><p>pm25: ' + pm25 + 'μg/m<sup>3</sup></p>'
       )
-    },
+    }
   }
 })
 
 let map = L.map('map', {
   center: [23.854271, 120.951906],
   zoom: 8,
-  zoomControl: false,
+  zoomControl: false
 })
 L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
