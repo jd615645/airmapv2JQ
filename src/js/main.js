@@ -72,7 +72,7 @@ var vm = new Vue({
       let sites = ['lass', 'lass4u', 'lassmaps', 'airbox']
 
       $.each(sites, (key, val) => {
-        dataSrc.push($.getJSON('../data/now/' + val + '.json'))
+        dataSrc.push($.getJSON('./data/now/' + val + '.json'))
       })
       $.when
         .apply($, dataSrc)
