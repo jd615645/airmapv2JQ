@@ -1,72 +1,77 @@
 #indicatorLevel
-  .bar.pm25(v-show='filterType=="pm25"')
-    .title
-      .type PM2.5
-      .unit
-        | μg/m
-        sup 3
-    .levels
-      .level(style='background-color: #9CFF9C;') 11
-      .level(style='background-color: #31FF00;') 23
-      .level(style='background-color: #31CF00;') 35
-      .level(style='background-color: #FFFF00;') 41
-      .level(style='background-color: #FFCF00;') 47
-      .level(style='background-color: #FF9A00;') 53
-      .level(style='background-color: #FF6464;') 58
-      .level(style='background-color: #FF0000;') 64
-      .level(style='background-color: #990000;') 70
-      .level(style='background-color: #CE30FF;') 71
-  .bar.pm25NASA(v-show='filterType=="pm25NASA"')
-    .title
-      .type PM2.5NASA
-      .unit
-        | μg/m
-        sup 3
-    .levels
-      .level(style='background-color: #0000CC;') 0
-      .level(style='background-color: #0133CC;') 3
-      .level(style='background-color: #0166FF;') 5
-      .level(style='background-color: #0099FF;') 8
-      .level(style='background-color: #32CBFE;') 10
-      .level(style='background-color: #65FE9A;') 13
-      .level(style='background-color: #99FF66;') 15
-      .level(style='background-color: #CCFF33;') 18
-      .level(style='background-color: #FFFF01;') 20
-      .level(style='background-color: #FF9933;') 35
-      .level(style='background-color: #FF3301;') 50
-      .level(style='background-color: #C90000;') 65
-      .level(style='background-color: #800000;') 80
-  .bar.aqi(v-show='filterType=="aqi"')
-    .title
-      .type AQI
-    .levels
-      .level(style='background-color: #00FF00;') 15
-      .level(style='background-color: #FFFF00;') 35
-      .level(style='background-color: #FF7E00;') 54
-      .level(style='background-color: #FF0000;') 150
-      .level(style='background-color: #800080;') 250
-      .level(style='background-color: #7E0023;') 300
-  .bar.temp(v-show='filterType=="temp"')
-    .title
-      .type Temperature
-      .unit ℃
-    .levels
-      .level(style='background-color: #6DB2CC;') 5
-      .level(style='background-color: #B9E6F6;') 11
-      .level(style='background-color: #4BAC66;') 15
-      .level(style='background-color: #A8D784;') 21
-      .level(style='background-color: #F0E389;') 25
-      .level(style='background-color: #F1B040;') 29
-      .level(style='background-color: #F55042;') 33
-      .level(style='background-color: #B6023C;') 35
-      .level(style='background-color: #9F66B5;') 37
-      .level(style='background-color: #752B8E;') 40
-  .bar.humi(v-show='filterType=="humi"')
-    .title
-      .type Humidity
-      .unit %
-    .levels
-      .level(style='background-color: #FAC090;') 20
-      .level(style='background-color: #76B531;') 40
-      .level(style='background-color: #B7DEE8;') 60
-      .level(style='background-color: #215968;') 80
+  .indicatorLevel(value='pm25')
+    .bar.pm25
+      .title
+        .type PM2.5
+        .unit
+          | μg/m
+          sup 3
+      .levels
+        .level(style='background-color: #9CFF9C;') 11
+        .level(style='background-color: #31FF00;') 23
+        .level(style='background-color: #31CF00;') 35
+        .level(style='background-color: #FFFF00;') 41
+        .level(style='background-color: #FFCF00;') 47
+        .level(style='background-color: #FF9A00;') 53
+        .level(style='background-color: #FF6464;') 58
+        .level(style='background-color: #FF0000;') 64
+        .level(style='background-color: #990000;') 70
+        .level(style='background-color: #CE30FF;') 71
+  .indicatorLevel(value='pm25NASA')
+    .bar.pm25NASA
+      .title
+        .type PM2.5NASA
+        .unit
+          | μg/m
+          sup 3
+      .levels
+        .level(style='background-color: #0000CC;') 0
+        .level(style='background-color: #0133CC;') 3
+        .level(style='background-color: #0166FF;') 5
+        .level(style='background-color: #0099FF;') 8
+        .level(style='background-color: #32CBFE;') 10
+        .level(style='background-color: #65FE9A;') 13
+        .level(style='background-color: #99FF66;') 15
+        .level(style='background-color: #CCFF33;') 18
+        .level(style='background-color: #FFFF01;') 20
+        .level(style='background-color: #FF9933;') 35
+        .level(style='background-color: #FF3301;') 50
+        .level(style='background-color: #C90000;') 65
+        .level(style='background-color: #800000;') 80
+  .indicatorLevel(value='aqi')
+    .bar.aqi
+      .title
+        .type AQI
+      .levels
+        .level(style='background-color: #00FF00;') 15
+        .level(style='background-color: #FFFF00;') 35
+        .level(style='background-color: #FF7E00;') 54
+        .level(style='background-color: #FF0000;') 150
+        .level(style='background-color: #800080;') 250
+        .level(style='background-color: #7E0023;') 300
+  .indicatorLevel(value='temp')
+    .bar.temp
+      .title
+        .type Temperature
+        .unit ℃
+      .levels
+        .level(style='background-color: #6DB2CC;') 5
+        .level(style='background-color: #B9E6F6;') 11
+        .level(style='background-color: #4BAC66;') 15
+        .level(style='background-color: #A8D784;') 21
+        .level(style='background-color: #F0E389;') 25
+        .level(style='background-color: #F1B040;') 29
+        .level(style='background-color: #F55042;') 33
+        .level(style='background-color: #B6023C;') 35
+        .level(style='background-color: #9F66B5;') 37
+        .level(style='background-color: #752B8E;') 40
+  .indicatorLevel(value='humi')
+    .bar.humi
+      .title
+        .type Humidity
+        .unit %
+      .levels
+        .level(style='background-color: #FAC090;') 20
+        .level(style='background-color: #76B531;') 40
+        .level(style='background-color: #B7DEE8;') 60
+        .level(style='background-color: #215968;') 80

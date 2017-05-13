@@ -9,14 +9,16 @@ h3 {
   font-size: 1.2em;
   margin: 0px;
 }
-
-[v-cloak] { display: none; }
+#myChart {
+  width: 100%;
+}
+// [v-cloak] { display: none; }
 
 .sidebar-tabs, .sidebar-content {
   background-color: rgba(255,255,255,.7);
 }
 
-#filterType, #filterGroup, #resourceLayer {
+#filterType, #filterGroup, #resourceLayer, #chartLine {
   h2 {
     border-left: 5px solid #ddd;
     padding-left: 15px;
@@ -84,6 +86,12 @@ h3 {
   right: 10px;
   z-index: 3;
   opacity: .8;
+  .indicatorLevel {
+    display: none;
+    &[value='pm25'] {
+      display: block;
+    }
+  }
   .bar {
     display: flex;
     align-items: center;
@@ -145,8 +153,11 @@ h3 {
   }
 }
 .leaflet-popup-content-wrapper {
-  width: 150px;
+  width: 300px;
   p {
     font-size: 1.5em;
   }
+}
+.leaflet-zoom-animated {
+  z-index: 4;
 }
