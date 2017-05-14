@@ -146,18 +146,40 @@ h3 {
     color: #eee;
   }
 }
-.leaflet-popup-content {
-  margin: 5px 10px;
-  p {
-    margin: 0px;
-  }
-}
-.leaflet-popup-content-wrapper {
-  width: 300px;
-  p {
-    font-size: 1.5em;
-  }
-}
 .leaflet-zoom-animated {
   z-index: 4;
+}
+.leaflet-popup-content-wrapper {
+  width: 400px;
+}
+.leaflet-popup-content {
+  width: 100% !important;
+  margin: 0px;
+  padding: 13px 19px;
+  p {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+  .popup-title {
+    font-size: 1.7em;
+    color:#38b0cf;
+    small {
+      color: #777;
+      padding-left: 10px;
+    }
+  }
+  .popup-pm25, .popup-pm25Prediction, .popup-temp, .popup-humi {
+    font-size: 1.3em;
+    span {
+      padding: 0px 10px;
+    }
+  }
+  .popup-time {
+    color: #777;
+    margin-bottom: 10px;
+  }
+  #showChart {
+    display: block;
+    margin: 0px auto 10px auto;
+  }
 }
